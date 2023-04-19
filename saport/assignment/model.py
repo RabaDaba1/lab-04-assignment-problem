@@ -129,5 +129,3 @@ class NormalizedAssignmentProblem:
         costs = np.pad(costs, pad_width=pad_width, mode='constant', constant_values=0)
 
         return NormalizedAssignmentProblem(costs, problem)
-
-            
