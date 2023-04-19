@@ -47,6 +47,48 @@ class Solver:
         # 2) cross out marked columns and not marked rows
         # 3) find minimal uncrossed value and subtract it from the cost matrix
         # 4) add the same value to all crossed out columns and rows
+        n, m = costs.shape
+
+        marked_rows = np.zeros(n)
+        marked_cols = np.zeros(m)
+        
+        zeros_in_rows = np.array([n-np.count_nonzero(costs[i]) for i in range(n)])
+        zeros_in_cols = np.array([m-np.count_nonzero(costs[:,i]) for i in range(m)])
+        
+        for task, cheapes_worker in partial_assignment.items():
+            if zeros_in_rows[cheapes_worker] <= zeros_in_cols[task]:
+                marked_rows[cheapes_worker] = 1
+            else:
+                marked_cols[task] = 1
+
+        for i in range(n):
+            if marked_rows[i] == 1 or marked_cols[i] == 1:
+                costs[i] = 0
+        
+
+        min_cost = -2137
+        for i in range(m):
+            for j in range(n):
+                if marked_cols[i] == 1 or marked_rows[j] == 1:
+                    if costs[i, j] == 0:
+                        continue
+                    if wartosc_min == -2137 or wartosc_min > costs[i, j]:
+                        wartosc_min = costs[i, j]
+
+        if min_cost == -2137:
+            return
+        
+        costs -= wartosc_min
+
+        marked_rows_indexes = np.where(marked_rows == 1)
+        marked_cols_indexes = np.where(marked_cols == 1)
+        
+        for i in marked_rows_indexes:
+            costs[i] += wartosc_min
+        
+        for i in marked_cols_indexes:
+            costs[:, i] += wartosc_min
+
         raise NotImplementedError()
 
     def find_max_assignment(self, costs) -> Dict[int,int]:
