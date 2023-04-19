@@ -65,7 +65,7 @@ class Solver:
                 marked_cols[task] = 1
                 for row in range(n):
                     if costs[cheapes_worker, row] == 0:
-                        zeros_in_rows[row] -= 1
+                        zeros_in_rows[row, task] -= 1
 
         for i in range(n):
             if marked_rows[i] == 1 or marked_cols[i] == 1:
