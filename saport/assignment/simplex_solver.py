@@ -45,7 +45,7 @@ class Solver:
             model.add_constraint(Expression.from_vectors(varaibles[:,i], [1]*n) == 1)
 
             for j in range(n):
-                model.add_constraint(varaibles[i][j] <= 1)
+                model.add_constraint(varaibles[i, j] <= 1)
         
         model.minimize(Expression.from_vectors(varaibles.flatten(), self.problem.costs.flatten()))
 
