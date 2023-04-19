@@ -37,7 +37,7 @@ class Solver:
         
         n = self.problem.size()
 
-        variables = [[model.create_variable(f"c{i}{j}") for j in range(n)] for i in range(n)]
+        variables = [[model.create_variable(f'c{i}{j}') for j in range(n)] for i in range(n)]
         varaibles = np.array(variables)
 
         for i in range(n):
@@ -55,10 +55,20 @@ class Solver:
         # 1) extract assignment for the original problem from the solution object
         # tips:
         # - remember that in the original problem n_workers() not alwyas equals n_tasks()
-        assignment = solution.assignment(model)
 
-        assigned_tasks = None
-        org_objective = None
+        wynik = solution.assignment(model)
+
+        m = self.problem.original_problem.n_workers()
+
+        assigned_tasks = [-1]*m
+        org_objective = 0
+
+        for i in range(m):
+            for j in range(n):
+                if wynik[varaibles[i, j].index] == 1.0:
+                    assigned_tasks[i] = j
+                    org_objective += self.problem.original_problem.costs[i, j]
+                    break
 
         return Assignment(assigned_tasks, org_objective)
 
