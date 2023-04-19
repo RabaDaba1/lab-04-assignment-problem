@@ -60,7 +60,7 @@ class Solver:
 
         num_workers = self.problem.original_problem.n_workers()
 
-        assigned_tasks = np.full(num_workers, -1)
+        assigned_tasks = [-1]*num_workers
         org_objective = 0
 
         for i in range(num_workers):
