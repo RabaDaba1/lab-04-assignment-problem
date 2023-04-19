@@ -66,14 +66,14 @@ class Solver:
         for task, cheapes_worker in partial_assignment.items():
             if zeros_in_rows[cheapes_worker] <= zeros_in_cols[task]:
                 marked_rows[cheapes_worker] = 1
-                for col in range(m):
-                    if costs[cheapes_worker, col] == 0:
-                        zeros_in_cols[col] -= 1
+                for col_i in range(m):
+                    if costs[cheapes_worker, col_i] == 0:
+                        zeros_in_cols[col_i] -= 1
             else:
                 marked_cols[task] = 1
-                for row in range(n):
-                    if costs[row, task] == 0:
-                        zeros_in_rows[row] -= 1
+                for row_i in range(n):
+                    if costs[row_i, task] == 0:
+                        zeros_in_rows[row_i] -= 1
 
         for i in range(n):
             if marked_rows[i] == 1 or marked_cols[i] == 1:
