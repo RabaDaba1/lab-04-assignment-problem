@@ -118,7 +118,15 @@ class NormalizedAssignmentProblem:
         # 2) copy the original matrix into new one, inverting the costs if the original problem was a maximization problem
         # 3) extra rows and cols should always be filled with 0s
         # tip: inverting the costs means that you should subtract the original cost from the maximal cost in the matrix   
-        costs = None 
+        costs = np.array(AssignmentProblem.costs)
+
+        # if not AssignmentProblem.objective_is_min:
+        #     costs *= -1
+
+
+        smaller_dim = np.argmin(costs.shape)
+        numpy.append(costs, [0]*costs.shape[smaller_dim], axis = smaller_dim)
+
         return NormalizedAssignmentProblem(costs, problem)
 
             
