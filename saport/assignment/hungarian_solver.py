@@ -85,22 +85,22 @@ class Solver:
                 if marked_cols[i] == 1 or marked_rows[j] == 1:
                     if costs[i, j] == 0:
                         continue
-                    if wartosc_min == -2137 or wartosc_min > costs[i, j]:
-                        wartosc_min = costs[i, j]
+                    if min_cost == -2137 or min_cost > costs[i, j]:
+                        min_cost = costs[i, j]
 
         if min_cost == -2137:
             return
         
-        costs -= wartosc_min
+        costs -= min_cost
 
         marked_rows_indexes = np.where(marked_rows == 1)
         marked_cols_indexes = np.where(marked_cols == 1)
         
         for i in marked_rows_indexes:
-            costs[i] += wartosc_min
+            costs[i] += min_cost
         
         for i in marked_cols_indexes:
-            costs[:, i] += wartosc_min
+            costs[:,i] += min_cost
 
         # raise NotImplementedError()
 
