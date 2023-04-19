@@ -39,6 +39,14 @@ class Solver:
 
     def extracts_mins(self, costs: ArrayLike):
         #TODO: substract minimal values from each row and column
+        n, m = costs.shape
+
+        for row_i in range(n):
+            costs[row_i] -= costs[row_i].min()
+        
+        for col_i in range(m):
+            costs[:, col_i] -= costs[:, col_i].min()
+
         raise NotImplementedError()
 
     def add_zero_by_crossing_out(self, costs: ArrayLike, partial_assignment: Dict[int,int]):
