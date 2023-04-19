@@ -58,12 +58,12 @@ class Solver:
 
         wynik = solution.assignment(model)
 
-        m = self.problem.original_problem.n_workers()
+        num_workers = self.problem.original_problem.n_workers()
 
-        assigned_tasks = [-1]*m
+        assigned_tasks = np.full(num_workers, -1)
         org_objective = 0
 
-        for i in range(m):
+        for i in range(num_workers):
             for j in range(n):
                 if wynik[varaibles[i, j].index] == 1.0:
                     assigned_tasks[i] = j
