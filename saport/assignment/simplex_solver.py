@@ -56,7 +56,7 @@ class Solver:
         # tips:
         # - remember that in the original problem n_workers() not alwyas equals n_tasks()
 
-        wynik = solution.assignment(model)
+        result = solution.assignment(model)
 
         num_workers = self.problem.original_problem.n_workers()
         num_tasks = self.problem.original_problem.n_tasks()
@@ -66,7 +66,7 @@ class Solver:
 
         for i in range(num_workers):
             for j in range(num_tasks):
-                if wynik[varaibles[i, j].index] == 1.0:
+                if result[varaibles[i, j].index] == 1.0:
                     assigned_tasks[i] = j
                     org_objective += self.problem.original_problem.costs[i, j]
                     break
