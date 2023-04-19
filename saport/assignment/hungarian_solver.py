@@ -47,7 +47,7 @@ class Solver:
         for col_i in range(m):
             costs[:, col_i] -= costs[:, col_i].min()
 
-        raise NotImplementedError()
+        # raise NotImplementedError()
 
     def add_zero_by_crossing_out(self, costs: ArrayLike, partial_assignment: Dict[int,int]):
         # TODO:
@@ -103,7 +103,7 @@ class Solver:
         for i in marked_cols_indexes:
             costs[:, i] += wartosc_min
 
-        raise NotImplementedError()
+        # raise NotImplementedError()
 
     def find_max_assignment(self, costs) -> Dict[int,int]:
         partial_assignment = dict()
