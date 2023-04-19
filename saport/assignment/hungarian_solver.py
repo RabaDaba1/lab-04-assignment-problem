@@ -41,11 +41,11 @@ class Solver:
         #TODO: substract minimal values from each row and column
         n, m = costs.shape
 
-        for row_i in range(n):
-            costs[row_i] -= costs[row_i].min()
+        for row in range(n):
+            costs[row] -= costs[row].min()
         
-        for col_i in range(m):
-            costs[:, col_i] -= costs[:, col_i].min()
+        for col in range(m):
+            costs[:, col] -= costs[:, col].min()
 
         # raise NotImplementedError()
 
@@ -66,14 +66,14 @@ class Solver:
         for task, cheapes_worker in partial_assignment.items():
             if zeros_in_rows[cheapes_worker] <= zeros_in_cols[task]:
                 marked_rows[cheapes_worker] = 1
-                for col_i in range(m):
-                    if costs[cheapes_worker, col_i] == 0:
-                        zeros_in_cols[col_i] -= 1
+                for col in range(m):
+                    if costs[cheapes_worker, col] == 0:
+                        zeros_in_cols[col] -= 1
             else:
                 marked_cols[task] = 1
-                for row_i in range(n):
-                    if costs[row_i, task] == 0:
-                        zeros_in_rows[row_i] -= 1
+                for row in range(n):
+                    if costs[row, task] == 0:
+                        zeros_in_rows[row] -= 1
 
         for i in range(n):
             if marked_rows[i] == 1 or marked_cols[i] == 1:
@@ -112,6 +112,32 @@ class Solver:
         # TIP: remember, rows and cols can't repeat in the assignment
         #      partial_assignment[1] = 2 means that the worker with index 1
         #                                has been assigned to task with index 2
+        n, m = costs.shape
+
+        zeros_in_rows = np.array([n-np.count_nonzero(costs[i]) for i in range(n)])
+        zeros_in_cols = np.array([m-np.count_nonzero(costs[:,i]) for i in range(m)])
+        
+        used_rows = np.zeros(n)
+        used_cols = np.zeros(m)
+
+        for row in range(n):
+            if used_rows[row]:
+                continue
+
+            row_idx = -1
+
+            for col in range(m):
+                if used_rows[col]:
+                    continue
+
+                if zeros_in_rows[row] > zeros_in_cols[col]:
+                    row_idx = row
+                
+            if row_idx == -1:
+                break
+
+            # ?????
+        
         return partial_assignment
 
     def create_assignment(self, raw_assignment: Dict[int,int]) -> Assignment:
@@ -120,6 +146,14 @@ class Solver:
         # 1) use self.problem.original_problem.costs to calculate the cost
         # 2) in case the original cost matrix (self.problem.original_problem.costs wasn't square)
         #    and there is more workers than task, you should assign -1 to workers with no task
-        assignment = None
-        total_cost = None
+        num_workers = self.problem.original_problem.n_workers()
+        num_tasks = self.problem.original_problem.n_tasks()
+        
+        assignment = [-1]*num_workers
+        total_cost = 0
+
+        for i in raw_assignment:
+            if i < num_workers and num_tasks > raw_assignment[i]:
+                assignment[i] = raw_assignment[i]
+                total_cost += self.problem.original_problem.costs[i, raw_assignment[i]]
         return Assignment(assignment, total_cost)
